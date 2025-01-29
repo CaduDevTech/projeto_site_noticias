@@ -120,10 +120,7 @@ class Usuarios extends Controller
                 $usuario = $this->usuarioModel->buscarPorEmail($dados['email']);
     
                 if ($usuario && password_verify($dados['senha'], $usuario->senha)) {
-                    // Login bem-sucedido
-                    echo 'Usuário logado com sucesso<hr>';
-                    // Redirecionar ou iniciar a sessão
-                    var_dump($usuario);
+                    $this->criarSessaoUsuario($usuario);
                 } else {
                     // Mensagem de erro genérica por segurança
                     $dados['erro_senha'] = 'Email ou senha inválidos.';
@@ -145,4 +142,21 @@ class Usuarios extends Controller
         }
     }
     
+    private function criarSessaoUsuario($usuario) {
+        $_SESSION['usuario_id'] = $usuario->id;
+        $_SESSION['usuario_nome'] = $usuario->nome;
+        $_SESSION['usuario_email'] = $usuario->email;
+
+        header('Location: ' . URL.'');
+    }
+
+    public function sair() {
+
+        unset($_SESSION["usuario_id"]);
+        unset($_SESSION["usuario_nome"]);
+        unset($_SESSION["usuario_email"]);
+
+        session_destroy();
+        header('Location: ' . URL.'');
+    }
 }    

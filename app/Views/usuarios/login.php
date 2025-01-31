@@ -1,8 +1,11 @@
-<div class="col-xl-4 col-md-6 mx-auto p-4 " >
+<div class="col-xl-4 col-md-6 mx-auto p-4" data-aos="fade-right" >
 <div class="border rounded p-5 border-dark-subtle circle">
 <h1 class="display-6 text-center">Entrar</h1>
+
+<?=Sessao::mensagemAlerta('usuarioError') ?>
+
 <p class="text-center pb-3" >Preencha os campos abaixo para se fazer login</p>
-<form name="formulario"  method="POST" action="<?=URL?>/usuarios/login" >
+<form name="formularioLogin"  method="POST" action="<?=URL?>/usuarios/login" >
   <div class="mb-3">
   <label for="exampleInputEmail1" class="form-label">Email:</label>
     <input type="text" placeholder="Digite o seu Email..." class="form-control <?= $dados['erro_email'] ? 'is-invalid' : '' ?>" id="exampleInputEmail1" value="<?= $dados['email'] ?>" name="email">

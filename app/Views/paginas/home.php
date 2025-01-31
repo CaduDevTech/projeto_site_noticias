@@ -1,3 +1,6 @@
+
+<?=Sessao::mensagemAlerta('usuarioSucesso'); ?>
+
 <div class="container p-5 mt-5">
     <div class="row">
         <div class="col-md-8">
@@ -19,7 +22,7 @@
     <div class="row">
         <!-- Card 1 -->
         <div class="col-md-4 mb-3" data-aos="fade-up">
-            <div class="card" style="width: 15rem;">
+            <div class="card" id="cardHome" style="width: 15rem;">
                 <img src="<?= URL ?>public/img/php-icon.png" class="card-img-top" alt="Imagem do Card 1">
                 <div class="card-body">
                     <h5 class="card-title">PHP</h5>
@@ -30,7 +33,7 @@
 
         <!-- Card 2 -->
         <div class="col-md-4 mb-3" data-aos="fade-up">
-            <div class="card" style="width: 15rem;">
+            <div class="card"  id="cardHome" style="width: 15rem;">
                 <img src="<?= URL ?>public/img/mysql-icon.svg" class="card-img-top" alt="Imagem do Card 2">
                 <div class="card-body">
                     <h5 class="card-title">MySQL</h5>
@@ -41,7 +44,7 @@
 
         <!-- Card 3 -->
         <div class="col-md-4 mb-3" data-aos="fade-up">
-            <div class="card" style="width: 15rem;">
+            <div class="card"  id="cardHome" style="width: 15rem;">
                 <img src="<?= URL ?>public/img/mvc-icon.png" class="card-img-top" alt="Imagem do Card 3">
                 <div class="card-body">
                     <h5 class="card-title">MVC</h5>

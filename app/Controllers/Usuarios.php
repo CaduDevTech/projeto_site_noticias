@@ -50,8 +50,12 @@ class Usuarios extends Controller
     
             if (empty($dados['senha'])) {
                 $dados['erro_senha'] = 'Preencha o campo de senha.';
+
             } elseif (strlen($dados['senha']) < 6) {
                 $dados['erro_senha'] = 'A senha deve ter pelo menos 6 caracteres.';
+
+            }elseif ($dados['senha'] !== $dados['senhaConfirmar']) {
+                $dados['erro_senhaConfirmar'] = 'As senhas devem ser iguais.';
             }
 
     
@@ -61,10 +65,17 @@ class Usuarios extends Controller
                 {
                 // Se nenhum erro, salva o usuário
                 $dados['senha'] = Validador::gerarSenha($dados['senha']);
+
                 if ($this->usuarioModel->armazenar($dados)) {
-                    echo 'Cadastro efetuado com sucesso<hr>';
+                    
+                    Sessao::mensagemAlerta('usuarioSucesso', 'Cadastrado com sucesso.', 'success');
+                    URL::redireicionar('paginas/home');
+                    exit;
+ 
                 } else {
-                    echo 'Erro ao cadastrar o usuário<hr>';
+                    
+                    Sessao::mensagemAlerta('usuarioError', 'Erro ao cadastrar usuário.', 'danger');
+                    unset($_SESSION['usuarioError']);
                 }
             } else {
                 // Mostra os erros no formulário
@@ -123,7 +134,8 @@ class Usuarios extends Controller
                     $this->criarSessaoUsuario($usuario);
                 } else {
                     // Mensagem de erro genérica por segurança
-                    $dados['erro_senha'] = 'Email ou senha inválidos.';
+                    Sessao::mensagemAlerta('usuarioError', 'Email ou senha inválidos.', 'danger');
+                    
                 }
             }
 
@@ -147,7 +159,7 @@ class Usuarios extends Controller
         $_SESSION['usuario_nome'] = $usuario->nome;
         $_SESSION['usuario_email'] = $usuario->email;
 
-        header('Location: ' . URL.'');
+        URL::redireicionar('paginas/home');
     }
 
     public function sair() {
@@ -157,6 +169,7 @@ class Usuarios extends Controller
         unset($_SESSION["usuario_email"]);
 
         session_destroy();
-        header('Location: ' . URL.'');
+
+        URL::redireicionar('paginas/login');
     }
 }    

@@ -18,9 +18,9 @@ class Usuario {
             $this->db->bind(':nomePublico', $dados['nomePublico']);
             $this->db->bind(':senha', $dados['senha']);
 
-            return $this->db->executa(); // Retorna true ou false diretamente
+            return $this->db->executa(); 
         } catch (Exception $e) {
-            error_log($e->getMessage()); // Log do erro (opcional)
+            error_log($e->getMessage());
             return false; // Retorna false em caso de erro
         }
     }
@@ -31,7 +31,7 @@ class Usuario {
         $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE email = :email");
         $this->db->bind(':email', $email);
 
-        $resultado = $this->db->resultado(); // Recupera o resultado da consulta
+        $resultado = $this->db->resultado(); 
         return $resultado->total > 0; // Retorna true se o email já existe
     }
 
@@ -41,7 +41,7 @@ class Usuario {
         $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE nome_publico = :nomePublico");
         $this->db->bind(':nomePublico', $nomePublico);
 
-        $resultado = $this->db->resultado(); // Recupera o resultado da consulta
+        $resultado = $this->db->resultado(); 
         return $resultado->total > 0; // Retorna true se o nome público já existe
     }
 
@@ -50,7 +50,7 @@ class Usuario {
         $this->db->bind(':email', $email);
         $this->db->bind(':senha', $senha);
 
-        $resultado = $this->db->resultado(); // Recupera o resultado da consulta
+        $resultado = $this->db->resultado(); 
         return $resultado->total > 0; // Retorna true se o nome público já existe
     }
 

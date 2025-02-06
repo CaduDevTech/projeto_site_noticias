@@ -1,6 +1,7 @@
 <?php
 
-class Usuario {
+class Usuario
+{
     private $db;
 
     public function __construct()
@@ -18,7 +19,7 @@ class Usuario {
             $this->db->bind(':nomePublico', $dados['nomePublico']);
             $this->db->bind(':senha', $dados['senha']);
 
-            return $this->db->executa(); 
+            return $this->db->executa();
         } catch (Exception $e) {
             error_log($e->getMessage());
             return false; // Retorna false em caso de erro
@@ -31,7 +32,7 @@ class Usuario {
         $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE email = :email");
         $this->db->bind(':email', $email);
 
-        $resultado = $this->db->resultado(); 
+        $resultado = $this->db->resultado();
         return $resultado->total > 0; // Retorna true se o email já existe
     }
 
@@ -41,23 +42,32 @@ class Usuario {
         $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE nome_publico = :nomePublico");
         $this->db->bind(':nomePublico', $nomePublico);
 
-        $resultado = $this->db->resultado(); 
+        $resultado = $this->db->resultado();
         return $resultado->total > 0; // Retorna true se o nome público já existe
     }
 
-    public function verificarLogin($email, $senha) {
+    public function verificarLogin($email, $senha)
+    {
         $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE email = :email AND senha = :senha");
         $this->db->bind(':email', $email);
         $this->db->bind(':senha', $senha);
 
-        $resultado = $this->db->resultado(); 
+        $resultado = $this->db->resultado();
         return $resultado->total > 0; // Retorna true se o nome público já existe
     }
 
     public function buscarPorEmail($email)
-{
-    $this->db->query("SELECT * FROM usuarios WHERE email = :email");
-    $this->db->bind(':email', $email);
-    return $this->db->resultado(); // Retorna o usuário ou false
-}
+    {
+        $this->db->query("SELECT * FROM usuarios WHERE email = :email");
+        $this->db->bind(':email', $email);
+        return $this->db->resultado(); // Retorna o usuário ou false
+    }
+
+    public function lerUsuarioPorId($id)
+    {
+        $this->db->query("SELECT * FROM post WHERE id = :id");
+        $this->db->bind(':id', $id);
+
+        return $this->db->resultado();
+    }
 }

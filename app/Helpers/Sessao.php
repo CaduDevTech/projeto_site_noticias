@@ -24,4 +24,14 @@ class Sessao
             }
         }
     }
+
+    public static function logado(){
+
+        if(isset($_SESSION['usuario_id'])){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 }

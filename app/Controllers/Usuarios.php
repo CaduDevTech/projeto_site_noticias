@@ -8,7 +8,9 @@ class Usuarios extends Controller
     {
         
         $this->usuarioModel = $this->model('Usuario');
+        
     }
+
     public function cadastrar()
     {
         $formulario = filter_input_array(INPUT_POST, FILTER_DEFAULT);
@@ -69,7 +71,7 @@ class Usuarios extends Controller
                 if ($this->usuarioModel->armazenar($dados)) {
                     
                     Sessao::mensagemAlerta('usuarioSucesso', 'Cadastrado com sucesso.', 'success');
-                    URL::redireicionar('paginas/home');
+                    URL::redireicionar('usuarios/login');
                     exit;
  
                 } else {
@@ -159,7 +161,7 @@ class Usuarios extends Controller
         $_SESSION['usuario_nome'] = $usuario->nome;
         $_SESSION['usuario_email'] = $usuario->email;
 
-        URL::redireicionar('paginas/home');
+        URL::redireicionar('posts');
     }
 
     public function sair() {
@@ -170,6 +172,6 @@ class Usuarios extends Controller
 
         session_destroy();
 
-        URL::redireicionar('paginas/login');
+        URL::redireicionar("");
     }
 }    

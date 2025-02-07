@@ -115,7 +115,12 @@ class Posts extends Controller
 
             $post = $this->postModel->lerPostPorId($id);
 
+            if ($post->id_usuario != $_SESSION['usuario_id']) {
 
+                Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post', 'danger');
+                URL::redireicionar('posts');
+
+            }
             $dados = [
                 'id' => $post->id,
                 'titulo' => $post->titulo,
@@ -139,5 +144,25 @@ class Posts extends Controller
         ];
 
         $this->view('posts/ver', $dados);
+    }
+
+
+    public function deletar($id){
+      
+        $id = (int) $id;
+        if ($this->postModel->lerPostPorId($id)->id_usuario != $_SESSION['usuario_id']) {
+
+            Sessao::mensagemAlerta('postError', 'Voce nao pode deletar esse post', 'danger');
+            URL::redireicionar('posts');
+
+        } else {
+
+            if ($this->postModel->deletar($id)) {
+                Sessao::mensagemAlerta('post', 'Noticia deletada com sucesso.', 'success');
+                URL::redireicionar('posts');
+            } else {
+                die('Erro ao deletar');
+            }
+        }
     }
 }

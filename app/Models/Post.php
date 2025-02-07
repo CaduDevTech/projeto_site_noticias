@@ -45,7 +45,7 @@ class Post
     {
         try {
             $this->db->query("UPDATE post SET titulo = :titulo, texto = :texto WHERE id = :id");
-            
+
             $this->db->bind(':id', $dados['id']);
             $this->db->bind(':titulo', $dados['titulo']);
             $this->db->bind(':texto', $dados['texto']);
@@ -71,5 +71,12 @@ class Post
         $this->db->query("SELECT * FROM usuarios WHERE id = :id");
         $this->db->bind(':id', $id);
         return $this->db->resultado(); // Retorna o usuário ou false
+    }
+
+    public function deletar($id)
+    {
+        $this->db->query("DELETE FROM post WHERE id = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->executa();
     }
 }

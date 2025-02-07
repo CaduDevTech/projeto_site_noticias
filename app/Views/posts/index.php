@@ -1,6 +1,11 @@
     <div class="col-xl-8 col-md-6 container py-5">
 
-        <?= Sessao::mensagemAlerta('post') ?>
+        <?php 
+      
+        
+        Sessao::mensagemAlerta('post'); 
+        Sessao::mensagemAlerta('postError');
+        ?>
 
         <div class="card" data-aos="fade-left">
             <div class="card-header bg-info text-white">POSTAGENS

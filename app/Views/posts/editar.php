@@ -6,11 +6,13 @@
                 <li class="breadcrumb-item"><a href="<?=URL?>posts/ver/<?=$dados['id']?>">Editar</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Atualizar</li>
             </ol>
-        </nav>
-
+        </nav> 
+ 
         <h1 class="display-6 text-center">Atualize uma noticia</h1>
 
-        <?=Sessao::mensagemAlerta('post') ?>
+        <?php
+    
+        Sessao::mensagemAlerta('post');?>
 
 
         <p class="text-center pb-3">Mude as informações abaixo, caso necessario</p>

@@ -22,7 +22,7 @@
   <div class="row">
   <div class="col">
   <div class="mb-3 ">
-  <button type="submit" name="enviar" class="btn btn-primary">Adicionar</button>
+  <button type="submit" name="enviar" class="btn btn-primary">Entrar</button>
   
   </div>
     <div class="col">

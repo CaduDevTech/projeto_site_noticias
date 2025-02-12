@@ -29,11 +29,11 @@ class Post
     public function postarNoticias($dados)
     {
         try {
-            $this->db->query("INSERT INTO post (titulo, texto, id_usuario) VALUES (:titulo, :texto, :id_usuario)");
+            $this->db->query("INSERT INTO post (titulo, texto, id_usuario, imagem) VALUES (:titulo, :texto, :id_usuario, :imagem)");
             $this->db->bind(':titulo', $dados['titulo']);
             $this->db->bind(':texto', $dados['texto']);
             $this->db->bind(':id_usuario', $dados['usuario_id']);
-
+            $this->db->bind('imagem', $dados['imagem']);
             return $this->db->executa();
         } catch (Exception $e) {
             error_log($e->getMessage());
@@ -77,6 +77,11 @@ class Post
     {
         $this->db->query("DELETE FROM post WHERE id = :id");
         $this->db->bind(':id', $id);
-        return $this->db->executa();
+        
+        if ($this->db->executa()):
+            return true;
+        else:
+            return false;
+        endif;
     }
 }

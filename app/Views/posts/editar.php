@@ -1,6 +1,6 @@
 <div class="col-xl-8 col-md-6 mx-auto p-4">
     <div class="border rounded p-5 border-dark-subtle circle" data-aos="fade-left">
-        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
             <ol class="breadcrumb"> 
                 <li class="breadcrumb-item"><a href="<?=URL?>posts">Posts</a></li>
                 <li class="breadcrumb-item"><a href="<?=URL?>posts/ver/<?=$dados['id']?>">Editar</a></li>

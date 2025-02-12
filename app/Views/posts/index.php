@@ -17,7 +17,9 @@
                 <?php foreach ($dados['posts'] as $post): ?>
 
                     <div class="card mb-3">
-                    <img src="<?= URL ?>/img/icone_em_construção.png" class="card-img-top img-fluid" style="max-height: 300px; object-fit: cover;" alt="Em construção">
+                    <?php if (!empty($post->imagem)): ?>
+                    <img src="<?= URL . '/' . $post->imagem ?>" class="card-img-top img-fluid" style="max-height: 300px; object-fit: cover;" alt="Em construção">
+                    <?php endif; ?>
 
                         <div class="card-body">
                             <h5 class="card-title"> <?= $post->titulo ?></h5>

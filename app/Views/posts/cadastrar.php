@@ -1,8 +1,8 @@
 <div class="col-xl-8 col-md-6 mx-auto p-4">
     <div class="border rounded p-5 border-dark-subtle circle" data-aos="fade-left">
-        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?=URL?>posts">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?=URL?>posts">Posts</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Cadastrar Notícia</li>
             </ol>
         </nav>
@@ -13,7 +13,7 @@
 
 
         <p class="text-center pb-3">Cadastre uma noticia</p>
-        <form name="formulario" method="POST" action="<?=URL?>posts/cadastrar">
+        <form name="formulario" method="POST" action="<?=URL?>posts/cadastrar" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Titulo:</label>
                 <input type="text" placeholder="Digite o texto da sua noticia..."
@@ -31,12 +31,12 @@
 
             <div class="mb-3 col-md-6 ">
                 <label for="formFile" class="form-label text-center">Caso queira adicionar uma imagem</label>
-                <input class="form-control border-dark-subtley text-center" type="file" id="formFile">
+                <input class="form-control border-dark-subtley text-center" type="file" id="formFile" accept="image/png, image/gif, image/jpeg" name="imagem">
             </div>
             <div class="row">
                 <div class="col">
                     <div class="mb-3 text-center">
-                        <button type="submit" name="enviar" class="btn btn-primary">Adicionar</button>
+                        <button type="submit" name="enviar" class="btn btn-primary">Cadastrar</button>
 
                     </div>
                 </div>

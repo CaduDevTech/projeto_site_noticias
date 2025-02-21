@@ -31,7 +31,8 @@
 
             <div class="mb-3 col-md-6 ">
                 <label for="formFile" class="form-label text-center">Caso queira adicionar uma imagem</label>
-                <input class="form-control border-dark-subtley text-center" type="file" id="formFile" accept="image/png, image/gif, image/jpeg" name="imagem">
+                <input class="form-control border-dark-subtley text-center <?= $dados['erro_imagem'] ? 'is-invalid' : '' ?>" type="file" id="formFile" accept="image/png, image/gif, image/jpeg" name="imagem">
+                <div class="invalid-feedback"><?= $dados['erro_texto'] ?></div>
             </div>
             <div class="row">
                 <div class="col">

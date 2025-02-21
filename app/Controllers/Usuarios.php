@@ -134,6 +134,7 @@ class Usuarios extends Controller
     
                 if ($usuario && password_verify($dados['senha'], $usuario->senha)) {
                     $this->criarSessaoUsuario($usuario);
+                    URL::redireicionar('posts');
                 } else {
                     // Mensagem de erro genérica por segurança
                     Sessao::mensagemAlerta('usuarioError', 'Email ou senha inválidos.', 'danger');

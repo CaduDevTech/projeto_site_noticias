@@ -1,10 +1,9 @@
     <div class="col-xl-8 col-md-6 container py-5">
 
         <?php 
-      
-        
         Sessao::mensagemAlerta('post'); 
         Sessao::mensagemAlerta('postError');
+        Sessao::mensagemAlerta('error_imagem');
         ?>
 
         <div class="card" data-aos="fade-left">
@@ -18,8 +17,9 @@
 
                     <div class="card mb-3">
                     <?php if (!empty($post->imagem)): ?>
-                    <img src="<?= URL . '/' . $post->imagem ?>" class="card-img-top img-fluid" style="max-height: 300px; object-fit: cover;" alt="Em construção">
-                    <?php endif; ?>
+                    <img src="<?= URL . $post->imagem?>" class="card-img-top img-fluid" style="max-height: 300px; object-fit: cover;" alt="Em construção">
+
+                    <?php endif;?>
 
                         <div class="card-body">
                             <h5 class="card-title"> <?= $post->titulo ?></h5>

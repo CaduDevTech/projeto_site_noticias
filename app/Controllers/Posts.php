@@ -34,8 +34,8 @@ class Posts extends Controller
         if (isset($formulario)) {
             // Pega os dados do formulário
             $dados = [
-                'titulo' => trim($formulario['titulo']),
-                'texto' => trim($formulario['texto']),
+                'titulo' => trim(htmlspecialchars($formulario['titulo'])),
+                'texto' => trim(htmlspecialchars($formulario['texto'])),
                 'usuario_id' => $_SESSION['usuario_id'],
                 'token' => $formulario['token'],
                 'erro_titulo' => '',
@@ -118,8 +118,8 @@ class Posts extends Controller
         if (isset($formulario)) {
             $dados = [
                 'id' => $id,
-                'titulo' => trim($formulario['titulo']),  // Trim para evitar espaços desnecessários
-                'texto' => trim($formulario['texto']),
+                'titulo' => trim(htmlspecialchars($formulario['titulo'])),
+                'texto' => trim(htmlspecialchars($formulario['texto'])),
                 'usuario_id' => $_SESSION['usuario_id'],
                 'token' => $formulario['token'],
                 'erro_titulo' => '',
@@ -194,6 +194,8 @@ class Posts extends Controller
     public function deletar($id)
     {
         $post = $this->postModel->lerPostPorId($id);
+        $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_SPECIAL_CHARS);
+
         //validação CSRF
         Csrf::validarToken($_POST['token']);
 

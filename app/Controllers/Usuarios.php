@@ -17,6 +17,11 @@ class Usuarios extends Controller
     
         if (isset($formulario)) {
             $dados = [
+                'nome' => trim(htmlspecialchars($formulario['nome'])),
+                'email' => trim(htmlspecialchars($formulario['email'])),
+                'nomePublico' => trim(htmlspecialchars($formulario['nomePublico'])),
+                'senha' => trim(htmlspecialchars($formulario['senha'])),
+                'senhaConfirmar' => trim(htmlspecialchars($formulario['senhaConfirmar'])),
                 'token' => $formulario['token'],
                 'erro_nome' => '',
                 'erro_email' => '',
@@ -47,6 +52,8 @@ class Usuarios extends Controller
                 $dados['erro_nomePublico'] = 'Preencha o campo de nome público.';
             } elseif ($this->usuarioModel->verificarDuplicidadeNomePublico($dados['nomePublico']) === true) {
                 $dados['erro_nomePublico'] = 'Nome público em uso, tente outro.';
+            }elseif(strlen($dados['nomePublico']) > 15){
+                $dados['erro_nomePublico'] = 'O nome público deve ter menos de 15 caracteres.';
             }
     
             if (empty($dados['senha'])) {
@@ -107,6 +114,8 @@ class Usuarios extends Controller
 
         if (isset($formulario)) {
             $dados = [
+                'email' => trim(htmlspecialchars($formulario['email'])),
+                'senha' => trim(htmlspecialchars($formulario['senha'])),
                 'token' => $formulario['token'],
                 'erro_email' => '',
                 'erro_senha' => '',

@@ -17,6 +17,9 @@
 
         <p class="text-center pb-3">Mude as informações abaixo, caso necessario</p>
         <form name="formulario" method="POST" action="<?=URL?>posts/editar/<?=$dados['id']?>">
+
+        <?php echo CriaCsrf::getToken(); ?>
+
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Titulo:</label>
                 <input type="text" placeholder="Digite o texto da sua noticia..."

@@ -26,7 +26,10 @@ class Posts extends Controller
 
     public function cadastrar()
     {
+
+
         $formulario = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
 
         if (isset($formulario)) {
             // Pega os dados do formulário
@@ -34,13 +37,19 @@ class Posts extends Controller
                 'titulo' => trim($formulario['titulo']),
                 'texto' => trim($formulario['texto']),
                 'usuario_id' => $_SESSION['usuario_id'],
+                'token' => $formulario['token'],
                 'erro_titulo' => '',
                 'erro_texto' => '',
                 'imagem' => '',
                 'erro_imagem' => '' // Adicionando campo para imagem
             ];
 
+
+
             // Validações básicas
+            
+            Csrf::validarToken($dados['token']);
+
             if (empty($dados['titulo'])) {
                 $dados['erro_titulo'] = 'Preencha o campo de Título.';
             }
@@ -112,11 +121,13 @@ class Posts extends Controller
                 'titulo' => trim($formulario['titulo']),  // Trim para evitar espaços desnecessários
                 'texto' => trim($formulario['texto']),
                 'usuario_id' => $_SESSION['usuario_id'],
+                'token' => $formulario['token'],
                 'erro_titulo' => '',
                 'erro_texto' => ''
             ];
 
             // Validações
+            Csrf::validarToken($dados['token']);
             if (empty($dados['titulo'])) {
                 $dados['erro_titulo'] = 'Preencha o campo de Título.';
             }
@@ -183,6 +194,8 @@ class Posts extends Controller
     public function deletar($id)
     {
         $post = $this->postModel->lerPostPorId($id);
+        //validação CSRF
+        Csrf::validarToken($_POST['token']);
 
         if (Sessao::logado() == false || $post->id_usuario != $_SESSION['usuario_id']) {
             Sessao::mensagemAlerta('postError', 'Voce não pode deletar esse post', 'danger');

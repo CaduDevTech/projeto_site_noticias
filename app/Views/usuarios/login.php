@@ -1,4 +1,8 @@
-<?=Sessao::mensagemAlerta('usuarioSucesso'); ?>
+<?=
+
+Sessao::mensagemAlerta('usuarioError','Erro ao cadastrar usuario', 'danger'); 
+Sessao::mensagemAlerta('usuarioSucesso'); 
+ ?>
 
 <div class="col-xl-4 col-md-6 mx-auto p-4" data-aos="fade-right" >
 <div class="border rounded p-5 border-dark-subtle circle">
@@ -8,6 +12,8 @@
 
 <p class="text-center pb-3" >Preencha os campos abaixo para se fazer login</p>
 <form name="formularioLogin"  method="POST" action="<?=URL?>usuarios/login" >
+  <?php echo CriaCsrf::getToken();?>
+  
   <div class="mb-3">
   <label for="exampleInputEmail1" class="form-label">Email:</label>
     <input type="text" placeholder="Digite o seu Email..." class="form-control <?= $dados['erro_email'] ? 'is-invalid' : '' ?>" id="exampleInputEmail1" value="<?= $dados['email'] ?>" name="email">

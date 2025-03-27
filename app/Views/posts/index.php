@@ -4,6 +4,7 @@
         Sessao::mensagemAlerta('post'); 
         Sessao::mensagemAlerta('postError');
         Sessao::mensagemAlerta('error_imagem');
+        Sessao::mensagemAlerta('tokenError');
         ?>
 
         <div class="card" data-aos="fade-left">

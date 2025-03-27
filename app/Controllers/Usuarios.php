@@ -17,17 +17,16 @@ class Usuarios extends Controller
     
         if (isset($formulario)) {
             $dados = [
-                'nome' => trim($formulario['nome']),
-                'email' => trim($formulario['email']),
-                'nomePublico' => trim($formulario['nomePublico']),
-                'senha' => trim($formulario['senha']),
-                'senhaConfirmar' => trim($formulario['senhaConfirmar']),
+                'token' => $formulario['token'],
                 'erro_nome' => '',
                 'erro_email' => '',
                 'erro_nomePublico' => '',
                 'erro_senha' => '',
                 'erro_senhaConfirmar' => ''
             ];
+
+            // Validador de token Csrf
+            Csrf::validarToken($dados['token']);
     
             // Validações
             if (empty($dados['nome'])) {
@@ -108,13 +107,16 @@ class Usuarios extends Controller
 
         if (isset($formulario)) {
             $dados = [
-                'email' => trim($formulario['email']),
-                'senha' => trim($formulario['senha']),
+                'token' => $formulario['token'],
                 'erro_email' => '',
                 'erro_senha' => '',
             ];
 
+            // Validador de token Csrf
+            Csrf::validarToken($dados['token']);
+
             // Validações
+            
             if (empty($dados['email'])) {
                 $dados['erro_email'] = 'Preencha o campo de email.';
             } elseif (Validador::validarEmail($dados['email'])) { // Correção: valida o formato do email corretamente

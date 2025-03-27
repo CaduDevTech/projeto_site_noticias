@@ -14,6 +14,8 @@
 
         <p class="text-center pb-3">Cadastre uma noticia</p>
         <form name="formulario" method="POST" action="<?=URL?>posts/cadastrar" enctype="multipart/form-data">
+
+        <?php echo CriaCsrf::getToken(); ?>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Titulo:</label>
                 <input type="text" placeholder="Digite o texto da sua noticia..."

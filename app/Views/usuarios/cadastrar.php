@@ -3,9 +3,13 @@
 <h1 class="display-6 text-center">Cadastre-se</h1>
 <p class="text-center pb-3" >Preencha os campos abaixo para se cadastrar</p>
 
-<?=Sessao::mensagemAlerta('usuarioError','Erro ao cadastrar usuario', 'danger'); unset($_SESSION['usuarioError']); ?>
+<?=
+Sessao::mensagemAlerta('usuarioError','Erro ao cadastrar usuario', 'danger'); 
+ ?>
 
 <form name="formulario"  method="POST" action="<?=URL?>/usuarios/cadastrar" >
+<?php echo CriaCsrf::getToken(); ?>
+
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nome:</label>
     <input type="text" placeholder="Digite o seu nome..." name="nome" id="exampleInputEmail1"  value="<?=$dados['nome'] ?>" class="form-control <?= $dados['erro_nome'] ? 'is-invalid' : '' ?>">

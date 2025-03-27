@@ -66,6 +66,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
                 <form action="<?= URL . 'posts/deletar/' . $dados['post']->id ?>" method="POST">
                     <input type="submit" class="btn btn-danger" value="Deletar">
+                    <?php echo CriaCsrf::getToken(); ?>
                 </form>
             </div>
         </div>

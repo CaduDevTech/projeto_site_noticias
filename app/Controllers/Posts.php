@@ -174,13 +174,13 @@ class Posts extends Controller
 
     public function ver($id)
     {
-        if ($id == null || !is_numeric($id)) {
+        $post = $this->postModel->lerPostPorId($id);
+        $usuario = $this->postModel->buscarUsuarioPorId($post->id_usuario);
+
+        if (!$post) {
             Sessao::mensagemAlerta('postError', 'Post nao encontrado.', 'danger');
             URL::redireicionar('posts');
         }
-
-        $post = $this->postModel->lerPostPorId($id);
-        $usuario = $this->postModel->buscarUsuarioPorId($post->id_usuario);
 
         $dados = [
             'post' => $post,
@@ -198,17 +198,12 @@ class Posts extends Controller
 
         //validação CSRF
         Csrf::validarToken($_POST['token']);
+        
 
-        if (Sessao::logado() == false || $post->id_usuario != $_SESSION['usuario_id']) {
-            Sessao::mensagemAlerta('postError', 'Voce não pode deletar esse post', 'danger');
+        if ($this->checarAutorizacao($id) || !$post || $metodo != 'POST') {
+            Sessao::mensagemAlerta('postError', 'Voce não tem permissão para deletar esse post', 'danger');
             URL::redireicionar('posts');
         } else {
-
-            if (!$post) {
-                Sessao::mensagemAlerta('postError', 'Post não encontrado.', 'danger');
-                URL::redireicionar('posts');
-                return;
-            }
 
 
             $caminhoImagem = '../public/' . $post->imagem;
@@ -227,6 +222,17 @@ class Posts extends Controller
                 Sessao::mensagemAlerta('postError', 'Erro ao deletar o post.', 'danger');
                 URL::redireicionar('posts');
             }
+        }
+    }
+
+    private function checarAutorizacao($id)
+    {
+        $post = $this->postModel->lerPostPorId($id);
+
+        if (Sessao::logado() == false || $post->id_usuario != $_SESSION['usuario_id']) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

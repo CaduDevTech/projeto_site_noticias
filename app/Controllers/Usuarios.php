@@ -6,7 +6,10 @@ class Usuarios extends Controller
 
     public function __construct()
     {
-        
+        if (Sessao::logado() == true) {
+            URL::redireicionar(url: 'posts');
+        }
+
         $this->usuarioModel = $this->model('Usuario');
         
     }
@@ -32,7 +35,7 @@ class Usuarios extends Controller
 
             // Validador de token Csrf
             Csrf::validarToken($dados['token']);
-    
+
             // Validações
             if (empty($dados['nome'])) {
                 $dados['erro_nome'] = 'Preencha o campo de nome.';

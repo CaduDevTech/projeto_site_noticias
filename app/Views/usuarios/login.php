@@ -8,7 +8,6 @@ Sessao::mensagemAlerta('usuarioSucesso');
 <div class="border rounded p-5 border-dark-subtle circle">
 <h1 class="display-6 text-center">Entrar</h1>
 
-<?=Sessao::mensagemAlerta('usuarioError') ?>
 
 <p class="text-center pb-3" >Preencha os campos abaixo para se fazer login</p>
 <form name="formularioLogin"  method="POST" action="<?=URL?>usuarios/login" >

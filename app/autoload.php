@@ -7,7 +7,9 @@ spl_autoload_register(function ($classe) {
        'Models',
        'Controllers',
        'Views',
-       'Helpers'
+       'Helpers',
+       'Support'
+       
    ];
 
    foreach ($diretorios as $diretorio) {

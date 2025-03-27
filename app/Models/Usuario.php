@@ -13,11 +13,13 @@ class Usuario
     public function armazenar($dados)
     {
         try {
-            $this->db->query("INSERT INTO usuarios (nome, email, nome_publico, senha) VALUES (:nome, :email, :nomePublico, :senha)");
+            $this->db->query("INSERT INTO usuarios (nome, email, nome_publico, senha, status_perfil, tipo_perfil) VALUES (:nome, :email, :nomePublico, :senha , :status_perfil, :tipo_perfil)");
             $this->db->bind(':nome', $dados['nome']);
             $this->db->bind(':email', $dados['email']);
             $this->db->bind(':nomePublico', $dados['nomePublico']);
             $this->db->bind(':senha', $dados['senha']);
+            $this->db->bind(':tipo_perfil', "comum");
+            $this->db->bind(':status_perfil', "ativo");
 
             return $this->db->executa();
         } catch (Exception $e) {
@@ -41,7 +43,7 @@ class Usuario
     {
         $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE nome_publico = :nomePublico");
         $this->db->bind(':nomePublico', $nomePublico);
-
+        
         $resultado = $this->db->resultado();
         return $resultado->total > 0; // Retorna true se o nome público já existe
     }

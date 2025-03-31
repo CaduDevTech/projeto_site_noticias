@@ -18,7 +18,7 @@ class Sessao
         }elseif (!empty($_SESSION[$nome]) && empty($texto)){
 
             $classe = !empty($_SESSION[$nome.'classe']) ? $_SESSION[$nome.'classe'] : 'success';
-            echo '<div class=" text-center alert alert-' .$classe. '" role="alert">'. $_SESSION[$nome] .'</div>';
+            echo '<div class=" text-center alert alert-' .$classe. '" role="alert" name="notificacao">'. $_SESSION[$nome] .'</div>';
             unset($_SESSION[$nome], $_SESSION[$nome . 'classe']);
 
             }

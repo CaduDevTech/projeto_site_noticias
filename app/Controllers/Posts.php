@@ -44,42 +44,50 @@ class Posts extends Controller
                 'erro_imagem' => '' // Adicionando campo para imagem
             ];
 
-
-
-            // Validações básicas
+            // Validações básicas de texto
             
-            Csrf::validarToken($dados['token']);
+            switch (Csrf::validarToken($dados['token']) == true) {
+                case empty($dados['titulo']):
+                    $dados['erro_titulo'] = 'Preencha o campo de Título.';
+                    break;
 
-            if (empty($dados['titulo'])) {
-                $dados['erro_titulo'] = 'Preencha o campo de Título.';
+                case empty($dados['texto']):
+                    $dados['erro_texto'] = 'Preencha o campo de Texto.';
+                    break;
             }
-            if (empty($dados['texto'])) {
-                $dados['erro_texto'] = 'Preencha o campo de Texto.';
-            }
+          
+            //tratamento da imagem
 
             // Tratando o upload de imagem
             if (!empty($_FILES['imagem']['name'])) {
+                
                 $arquivo = $_FILES['imagem'];
                 $pastaDestino = 'Uploads/posts/';
-
-                // Gera um nome único para a imagem
-                $extensao = pathinfo($arquivo['name'], PATHINFO_EXTENSION);
+                $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
                 $nomeArquivo = uniqid('post_') . '.' . $extensao;
                 $caminhoFinal = $pastaDestino . $nomeArquivo;
-
-                // Verifica se é uma imagem válida
                 $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
-                if (!in_array(strtolower($extensao), $extensoesPermitidas)) {
-                    $dados['erro_imagem'] = 'Formato de imagem inválido. Use JPG, JPEG, PNG.';
-                } elseif ($arquivo['size'] > 5 * 1024 * 1024) { // Limite de 5MB
-                    $dados['erro_imagem'] = 'O arquivo não pode exceder 5MB.';
-                } else {
-                    // Move o arquivo para a pasta de uploads
-                    if (move_uploaded_file($arquivo['tmp_name'], $caminhoFinal)) {
-                        $dados['imagem'] = $caminhoFinal;
-                    } else {
+            
+                switch (true) {
+                    // Caso 1: Verifica formato da imagem
+                    case !in_array($extensao, $extensoesPermitidas):
+                        $dados['erro_imagem'] = 'Formato de imagem inválido. Use JPG, JPEG, PNG.';
+                        break;
+            
+                    // Caso 2: Verifica tamanho do arquivo (5MB)
+                    case $arquivo['size'] > 5 * 1024 * 1024:
+                        $dados['erro_imagem'] = 'O arquivo não pode exceder 5MB.';
+                        break;
+            
+                    // Caso 3: Tenta mover o arquivo
+                    case !move_uploaded_file($arquivo['tmp_name'], $caminhoFinal):
                         $dados['erro_imagem'] = 'Erro ao fazer upload da imagem.';
-                    }
+                        break;
+            
+                    // Caso padrão: Upload bem-sucedido
+                    default:
+                        $dados['imagem'] = $caminhoFinal;
+                        break;
                 }
             }
 
@@ -121,33 +129,42 @@ class Posts extends Controller
                 'titulo' => trim(htmlspecialchars($formulario['titulo'])),
                 'texto' => trim(htmlspecialchars($formulario['texto'])),
                 'usuario_id' => $_SESSION['usuario_id'],
-                'token' => $formulario['token'],
+                'token' => htmlspecialchars($formulario['token']),
                 'erro_titulo' => '',
                 'erro_texto' => ''
             ];
 
             // Validações
-            Csrf::validarToken($dados['token']);
-            if (empty($dados['titulo'])) {
-                $dados['erro_titulo'] = 'Preencha o campo de Título.';
-            }
-            if (empty($dados['texto'])) {
-                $dados['erro_texto'] = 'Preencha o campo de Texto.';
-            }
+           
 
-            // Se houver erros, volta para a view com os valores preenchidos
-            if (!empty($dados['erro_titulo']) || !empty($dados['erro_texto'])) {
-                $this->view('posts/editar', $dados);
-                return; // Impede a execução do código abaixo
-            }
+            switch (Csrf::validarToken($dados['token']) == true) {
 
-            // Se nenhum erro, salva o post
-            if ($this->postModel->atualizar($dados)) {
-                Sessao::mensagemAlerta('post', 'Noticia atualizada com sucesso.', 'success');
-                URL::redireicionar('posts');
-            } else {
-                die('Erro ao cadastrar');
-            }
+                case empty($dados['titulo']) :
+                    $dados['erro_titulo'] = 'Preencha o campo de Título.';
+                    $this->view('posts/editar', $dados);
+                    return;
+                    break;
+
+                case empty($dados['texto']) :
+                    $dados['erro_texto'] = 'Preencha o campo de Texto.';
+                    $this->view('posts/editar', $dados);
+                    return;
+                    break;
+
+                case $this->postModel->atualizar($dados) :
+                    Sessao::mensagemAlerta('post', 'Noticia atualizada com sucesso.', 'success');
+                    URL::redireicionar('posts');
+                    return;
+                    break;
+
+                default:
+                    Sessao::mensagemAlerta('postError', 'Erro ao atualizar noticia.', 'danger');
+                    $this->view('posts/editar', $dados);
+                    return;
+                    break;
+                }
+
+
         } else {
             // Exibe formulário vazio
 
@@ -205,9 +222,7 @@ class Posts extends Controller
             URL::redireicionar('posts');
         } else {
 
-
             $caminhoImagem = '../public/' . $post->imagem;
-
 
             if ($this->postModel->deletar($id)) {
 

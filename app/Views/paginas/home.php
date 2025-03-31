@@ -52,7 +52,7 @@
 
     <div class="col-lg-4 col-md-5 col-sm-6 col-12">
         <div class="card" id="cardHome">
-            <img src="<?= URL ?>public/img/antivirus_icon.jpg" class="card-img-top" alt="Imagem do Card 4">
+            <img src="<?= URL ?>public/img/hacker_icon.webp" class="card-img-top" alt="Imagem do Card 4">
             <div class="card-body">
                 <h5 class="card-title">Proteções</h5>
                 <p class="card-text">O sistema utiliza protecões contra ataques com <strong>CSRF</strong> (<i>Cross-Site Request Forgery</i>), <strong>SQL Injection</strong> e <strong>XSS</strong>(<i> Cross-Site Scripting</i>).</p>

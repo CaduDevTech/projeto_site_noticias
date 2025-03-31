@@ -179,7 +179,7 @@ class Usuarios extends Controller
         URL::redireicionar('posts');
     }
 
-    public function sair() {
+    public function sair($rota = null) {
 
         unset($_SESSION["usuario_id"]);
         unset($_SESSION["usuario_nome"]);
@@ -187,6 +187,6 @@ class Usuarios extends Controller
 
         session_destroy();
 
-        URL::redireicionar("");
+        URL::redireicionar($rota);
     }
 }    

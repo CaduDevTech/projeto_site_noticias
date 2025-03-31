@@ -1,8 +1,12 @@
 <IfModule mod_rewrite.c>
-    Options -Multiviews
     RewriteEngine On
     RewriteBase /projetoSiteNoticias/public
-    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Permite acesso direto a arquivos .php em /erros/
+    RewriteCond %{REQUEST_URI} !^/erros/erro-403\.php$ [NC]
+
+    # Redireciona o resto para o index.php
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
 </IfModule>

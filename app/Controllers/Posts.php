@@ -45,45 +45,49 @@ class Posts extends Controller
             ];
 
             // Validações básicas de texto
-            
+
             switch (Csrf::validarToken($dados['token']) == true) {
                 case empty($dados['titulo']):
                     $dados['erro_titulo'] = 'Preencha o campo de Título.';
+                    $this->view('posts/cadastrar', $dados);
+                    return;
                     break;
 
                 case empty($dados['texto']):
                     $dados['erro_texto'] = 'Preencha o campo de Texto.';
+                    $this->view('posts/cadastrar', $dados);
+                    return;
                     break;
             }
-          
-            //tratamento da imagem
+
 
             // Tratando o upload de imagem
             if (!empty($_FILES['imagem']['name'])) {
-                
+
                 $arquivo = $_FILES['imagem'];
                 $pastaDestino = 'Uploads/posts/';
                 $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
                 $nomeArquivo = uniqid('post_') . '.' . $extensao;
                 $caminhoFinal = $pastaDestino . $nomeArquivo;
                 $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
-            
-                switch (true) {
+
+                switch (empty($dados['erro_titulo']) && empty($dados['erro_texto'])) {
                     // Caso 1: Verifica formato da imagem
                     case !in_array($extensao, $extensoesPermitidas):
                         $dados['erro_imagem'] = 'Formato de imagem inválido. Use JPG, JPEG, PNG.';
                         break;
-            
-                    // Caso 2: Verifica tamanho do arquivo (5MB)
-                    case $arquivo['size'] > 5 * 1024 * 1024:
+
+                    case $_FILES['imagem']['size'] > 5 * 1024 * 1024:
                         $dados['erro_imagem'] = 'O arquivo não pode exceder 5MB.';
+                        $this->view('posts/cadastrar', $dados);
+                        return;
                         break;
-            
+
                     // Caso 3: Tenta mover o arquivo
                     case !move_uploaded_file($arquivo['tmp_name'], $caminhoFinal):
                         $dados['erro_imagem'] = 'Erro ao fazer upload da imagem.';
                         break;
-            
+
                     // Caso padrão: Upload bem-sucedido
                     default:
                         $dados['imagem'] = $caminhoFinal;
@@ -98,12 +102,16 @@ class Posts extends Controller
             }
 
             // Salvar no banco
-            if ($this->postModel->postarNoticias($dados)) {
-                Sessao::mensagemAlerta('post', 'Cadastrado com sucesso.', 'success');
-                URL::redireicionar('posts');
-            } else {
-                die('Erro ao cadastrar.');
+            try {
+                $this->postModel->postarNoticias($dados);
+                Sessao::mensagemAlerta('post', 'Post cadastrado com sucesso.');
+            } catch (Exception $e) {
+                Sessao::mensagemAlerta('post', 'Post cadastrado com erro', 'danger');
+
+                //echo $e->getMessage();
+                exit;
             }
+            URL::redireicionar('posts');
         } else {
             // Exibe formulário vazio
             $dados = [
@@ -111,7 +119,8 @@ class Posts extends Controller
                 'texto' => '',
                 'erro_titulo' => '',
                 'erro_texto' => '',
-                'erro_imagem' => ''
+                'erro_imagem' => '',
+                'imagem' => ''
             ];
 
             $this->view('posts/cadastrar', $dados);
@@ -135,23 +144,23 @@ class Posts extends Controller
             ];
 
             // Validações
-           
+
 
             switch (Csrf::validarToken($dados['token']) == true) {
 
-                case empty($dados['titulo']) :
+                case empty($dados['titulo']):
                     $dados['erro_titulo'] = 'Preencha o campo de Título.';
                     $this->view('posts/editar', $dados);
                     return;
                     break;
 
-                case empty($dados['texto']) :
+                case empty($dados['texto']):
                     $dados['erro_texto'] = 'Preencha o campo de Texto.';
                     $this->view('posts/editar', $dados);
                     return;
                     break;
 
-                case $this->postModel->atualizar($dados) :
+                case $this->postModel->atualizar($dados):
                     Sessao::mensagemAlerta('post', 'Noticia atualizada com sucesso.', 'success');
                     URL::redireicionar('posts');
                     return;
@@ -162,9 +171,7 @@ class Posts extends Controller
                     $this->view('posts/editar', $dados);
                     return;
                     break;
-                }
-
-
+            }
         } else {
             // Exibe formulário vazio
 
@@ -207,7 +214,6 @@ class Posts extends Controller
         $this->view('posts/ver', $dados);
     }
 
-
     public function deletar($id)
     {
         $post = $this->postModel->lerPostPorId($id);
@@ -215,7 +221,7 @@ class Posts extends Controller
 
         //validação CSRF
         Csrf::validarToken($_POST['token']);
-        
+
 
         if ($this->checarAutorizacao($id) || !$post || $metodo != 'POST') {
             Sessao::mensagemAlerta('postError', 'Voce não tem permissão para deletar esse post', 'danger');

@@ -26,7 +26,7 @@ fix(posts): Corrige validação de cadastro para exibir erro em posts sem salvar
 
 ## Tipos de Commit
 
-| Tipo       | Uso                                                                  |
+| Tipo       | Uso                                                                   |
 |------------|-----------------------------------------------------------------------|
 | `feat`     | Quando uma nova funcionalidade é adicionada                           |
 | `fix`      | Correção de bugs                                                      |

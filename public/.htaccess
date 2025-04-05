@@ -1,3 +1,4 @@
+# Ativa o mod_rewrite se disponível
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /projetoSiteNoticias/public
@@ -10,3 +11,14 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
 </IfModule>
+
+# Aumenta o limite de upload para 10MB
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+
+# Evita que uploads longos sobrecarreguem o servidor
+php_value max_execution_time 300
+php_value max_input_time 300
+
+LimitRequestBody 10485760
+

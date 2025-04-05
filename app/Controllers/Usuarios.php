@@ -119,28 +119,30 @@ class Usuarios extends Controller
             $dados = [
                 'email' => trim(htmlspecialchars($formulario['email'])),
                 'senha' => trim(htmlspecialchars($formulario['senha'])),
-                'token' => $formulario['token'],
+                'token' => htmlspecialchars($formulario['token']),
                 'erro_email' => '',
                 'erro_senha' => '',
             ];
 
-            // Validador de token Csrf
-            Csrf::validarToken($dados['token']);
+            // Caso base no CSRF, faz as validações necessárias
 
-            // Validações
-            
-            if (empty($dados['email'])) {
-                $dados['erro_email'] = 'Preencha o campo de email.';
-            } elseif (Validador::validarEmail($dados['email'])) { // Correção: valida o formato do email corretamente
-                $dados['erro_email'] = 'O email inserido não é válido.';
+            switch (Csrf::validarToken($dados['token']) == true) {
+
+                case empty($dados['email']) :
+                    $dados['erro_email'] = 'Preencha o campo de email.';
+                    break;
+                case Validador::validarEmail($dados['email']) :
+                    $dados['erro_email'] = 'O email inserido não é válido.';
+                    break;
+                case empty($dados['senha']) :
+                    $dados['erro_senha'] = 'Preencha o campo de senha.';
+                    break;
+                    
+                case strlen($dados['senha']) < 6 :
+                    $dados['erro_senha'] = 'A senha deve ter pelo menos 6 caracteres.';
+                    break;
             }
-
-            if (empty($dados['senha'])) {
-                $dados['erro_senha'] = 'Preencha o campo de senha.';
-            } elseif (strlen($dados['senha']) < 6) {
-                $dados['erro_senha'] = 'Email ou senha inválidos.';
-            }
-
+                
             // Verifica se há erros
             if (empty($dados['erro_email']) && empty($dados['erro_senha'])) {
                 // Busca o usuário no banco pelo email
@@ -151,8 +153,7 @@ class Usuarios extends Controller
                     URL::redireicionar('posts');
                 } else {
                     // Mensagem de erro genérica por segurança
-                    Sessao::mensagemAlerta('usuarioError', 'Email ou senha inválidos.', 'danger');
-                    
+                    $dados['erro_senha'] = 'Email ou senha inválidos.';
                 }
             }
 

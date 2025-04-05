@@ -31,7 +31,7 @@ class Csrf
                 unset($_SESSION['token']);
                 return true;
 
-            default: die('Erro ao validar token');
+            default: return false;
         }
  
 

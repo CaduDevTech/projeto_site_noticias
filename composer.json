@@ -1,0 +1,17 @@
+{
+    "name": "eduardo/projeto-site-noticias",
+    "require-dev": {
+        "phpstan/phpstan": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardo\\ProjetoSiteNoticias\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Eduardo1679",
+            "email": "dudueduardosantos2018@gmail.com"
+        }
+    ]
+}

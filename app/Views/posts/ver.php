@@ -12,7 +12,6 @@
         </div>
 
         <div class="card-body my-3">
-
             <?php if (!empty($dados['post']->imagem)): ?>
             <img src="<?= URL . '/' . $dados['post']->imagem ?>" class="card-img-top img-fluid"
                 style="max-height: 300px; object-fit: cover;" alt="Em construção">
@@ -27,7 +26,11 @@
             </small>
         </div>
 
-        <?php if($dados['post'] -> id_usuario == $_SESSION['usuario_id']):?>
+        <?php if(
+            $dados['post']->id_usuario == $_SESSION['usuario_id'] ||
+            $_SESSION['usuario_nivel'] == 'admin' ||
+            $_SESSION['usuario_nivel'] == 'tecnico')
+            :?>
 
         <ul class="list-inline">
             <li class="list-inline-item">
@@ -37,8 +40,6 @@
                 <!-- Botão para abrir o modal -->
                 <a class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#modalDeletar<?=$dados['post']->id?>">Deletar</a>
-
-
             </li>
         </ul>
 
@@ -46,7 +47,12 @@
     </div>
 </div>
 
-<?php if($dados['post'] -> id_usuario == $_SESSION['usuario_id']):?>
+<?php if(
+    $dados['post'] -> id_usuario == $_SESSION['usuario_id'] ||
+    $_SESSION['usuario_nivel'] == 'admin' ||
+    $_SESSION['usuario_nivel'] == 'tecnico'
+    ):?>
+
                     <!-- Modal -->
 <div class="modal fade" id="modalDeletar<?=$dados['post']->id?>" tabindex="-1"
     aria-labelledby="modalDeletarLabel<?=$dados['post']->id?>" aria-hidden="true">

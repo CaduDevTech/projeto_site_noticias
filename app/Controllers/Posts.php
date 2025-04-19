@@ -132,6 +132,7 @@ class Posts extends Controller
     {
         $formulario = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
+
         if (isset($formulario)) {
             $dados = [
                 'id' => $id,
@@ -142,7 +143,7 @@ class Posts extends Controller
                 'erro_titulo' => '',
                 'erro_texto' => ''
             ];
-
+            $post = $this->postModel->lerPostPorId($id);
             // Validações
 
 
@@ -157,6 +158,12 @@ class Posts extends Controller
                 case empty($dados['texto']):
                     $dados['erro_texto'] = 'Preencha o campo de Texto.';
                     $this->view('posts/editar', $dados);
+                    return;
+                    break;
+
+                case !$this->checarAutorizacao($id, "editar") :
+                    Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post2', 'danger');
+                    URL::redireicionar('posts');
                     return;
                     break;
 
@@ -177,24 +184,24 @@ class Posts extends Controller
 
             $post = $this->postModel->lerPostPorId($id);
 
-            if ($post->id_usuario != $_SESSION['usuario_id']) {
+            if ($this->checarAutorizacao($id, "editar") || !$post->id_usuario != $_SESSION['usuario_id'] ) {
 
-                Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post', 'danger');
+                Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post3', 'danger');
                 URL::redireicionar('posts');
-            } else {
-
-                $dados = [
-                    'id' => $post->id,
-                    'titulo' => $post->titulo,
-                    'texto' => $post->texto,
-                    'erro_titulo' => '',
-                    'erro_texto' => ''
-                ];
             }
-
-            $this->view('posts/editar', $dados);
         }
+        $dados = [
+            'id' => $post->id,
+            'titulo' => $post->titulo,
+            'texto' => $post->texto,
+            'erro_titulo' => '',
+            'erro_texto' => ''
+        ];
+
+
+        $this->view('posts/editar', $dados);
     }
+
 
     public function ver($id)
     {
@@ -223,7 +230,7 @@ class Posts extends Controller
         Csrf::validarToken($_POST['token']);
 
 
-        if ($this->checarAutorizacao($id) || !$post || $metodo != 'POST') {
+        if (!$this->checarAutorizacao($id, "deletar") || !$post || $metodo != 'POST') {
             Sessao::mensagemAlerta('postError', 'Voce não tem permissão para deletar esse post', 'danger');
             URL::redireicionar('posts');
         } else {
@@ -246,14 +253,36 @@ class Posts extends Controller
         }
     }
 
-    private function checarAutorizacao($id)
+    private function checarAutorizacao($id, $acao)
     {
         $post = $this->postModel->lerPostPorId($id);
 
-        if (Sessao::logado() == false || $post->id_usuario != $_SESSION['usuario_id']) {
+        $dados = [
+            'admin' => ['deletar', 'editar'],
+            'tecnico' => ['editar']
+        ];
+
+        if ($post->id_usuario == $_SESSION['usuario_id']) {
+
             return true;
         } else {
-            return false;
+            switch ($permissao = $_SESSION['usuario_nivel']) {
+                case 'comum':
+                    return false;
+                    break;
+
+                case 'tecnico':
+                    if (in_array($acao, $dados['tecnico'])) {
+                        return true;
+                    }
+                    break;
+
+                case 'admin':
+                    if (in_array($acao, $dados['admin'])) {
+                        return true;
+                    }
+                    break;
+            }
         }
     }
 }

@@ -5,6 +5,7 @@
         Sessao::mensagemAlerta('postError');
         Sessao::mensagemAlerta('error_imagem');
         Sessao::mensagemAlerta('tokenError');
+        print_r($_SESSION);
         ?>
 
         <div class="card" data-aos="fade-left">

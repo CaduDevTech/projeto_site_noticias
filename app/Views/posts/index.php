@@ -15,7 +15,15 @@
                 </div>
             </div>
             <div class="card-body">
-                <?php foreach ($dados['posts'] as $post): ?>
+
+                <?php if (empty($dados['posts'])): ?>
+                    <div class="alert alert-info text-center" role="alert">
+                        Nenhuma postagem encontrada!
+                    </div>
+                <?php endif; ?>
+
+                <?php
+                 foreach ($dados['posts'] as $post): ?>
 
                     <div class="card mb-3">
                     <?php if (!empty($post->imagem)): ?>

@@ -153,38 +153,33 @@ class Posts extends Controller
                     $dados['erro_titulo'] = 'Preencha o campo de Título.';
                     $this->view('posts/editar', $dados);
                     return;
-                    break;
-
+            
                 case empty($dados['texto']):
                     $dados['erro_texto'] = 'Preencha o campo de Texto.';
                     $this->view('posts/editar', $dados);
                     return;
-                    break;
-
+                    
                 case !$this->checarAutorizacao($id, "editar") :
                     Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post2', 'danger');
                     URL::redireicionar('posts');
                     return;
-                    break;
 
                 case $this->postModel->atualizar($dados):
                     Sessao::mensagemAlerta('post', 'Noticia atualizada com sucesso.', 'success');
                     URL::redireicionar('posts');
                     return;
-                    break;
 
                 default:
                     Sessao::mensagemAlerta('postError', 'Erro ao atualizar noticia.', 'danger');
-                    $this->view('posts/editar', $dados);
+                    URL::redireicionar('posts');
                     return;
-                    break;
             }
         } else {
             // Exibe formulário vazio
 
             $post = $this->postModel->lerPostPorId($id);
 
-            if ($this->checarAutorizacao($id, "editar") || !$post->id_usuario != $_SESSION['usuario_id'] ) {
+            if (!$this->checarAutorizacao($id, "editar")) {
 
                 Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post3', 'danger');
                 URL::redireicionar('posts');
@@ -229,7 +224,6 @@ class Posts extends Controller
         //validação CSRF
         Csrf::validarToken($_POST['token']);
 
-
         if (!$this->checarAutorizacao($id, "deletar") || !$post || $metodo != 'POST') {
             Sessao::mensagemAlerta('postError', 'Voce não tem permissão para deletar esse post', 'danger');
             URL::redireicionar('posts');
@@ -265,23 +259,27 @@ class Posts extends Controller
         if ($post->id_usuario == $_SESSION['usuario_id']) {
 
             return true;
+            
         } else {
-            switch ($permissao = $_SESSION['usuario_nivel']) {
-                case 'comum':
-                    return false;
-                    break;
+
+            switch ($_SESSION['usuario_nivel']) {
 
                 case 'tecnico':
                     if (in_array($acao, $dados['tecnico'])) {
                         return true;
+                    }else{
+                        return false;
                     }
-                    break;
-
+                    
                 case 'admin':
                     if (in_array($acao, $dados['admin'])) {
                         return true;
+                    }else{
+                        return false;
                     }
-                    break;
+                default:
+                    return false;
+                    
             }
         }
     }

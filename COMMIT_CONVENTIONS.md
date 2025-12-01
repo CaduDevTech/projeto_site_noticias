@@ -78,7 +78,6 @@ feat(comments): Adiciona comentários            (Escopo em inglês)
 - `database`
 - `notificacoes`
 - `ui`
-- `api`
 
 ### Exemplos de escopos inválidos
 

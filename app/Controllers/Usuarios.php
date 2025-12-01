@@ -22,7 +22,7 @@ class Usuarios extends Controller
             $dados = [
                 'nome' => trim(htmlspecialchars($formulario['nome'])),
                 'email' => trim(htmlspecialchars($formulario['email'])),
-                'nomePublico' => trim(htmlspecialchars($formulario['nomePublico'])),
+                'nome_publico' => trim(htmlspecialchars($formulario['nome_publico'])),
                 'senha' => trim(htmlspecialchars($formulario['senha'])),
                 'senhaConfirmar' => trim(htmlspecialchars($formulario['senhaConfirmar'])),
                 'token' => $formulario['token'],
@@ -51,11 +51,11 @@ class Usuarios extends Controller
                 $dados['erro_email'] = 'Email em uso, tente outro.';
             }
     
-            if (empty($dados['nomePublico'])) {
+            if (empty($dados['nome_publico'])) {
                 $dados['erro_nomePublico'] = 'Preencha o campo de nome público.';
-            } elseif ($this->usuarioModel->verificarDuplicidadeNomePublico($dados['nomePublico']) === true) {
+            } elseif ($this->usuarioModel->verificarDuplicidadeNomePublico($dados['nome_publico']) === true) {
                 $dados['erro_nomePublico'] = 'Nome público em uso, tente outro.';
-            }elseif(strlen($dados['nomePublico']) > 15){
+            }elseif(strlen($dados['nome_publico']) > 15){
                 $dados['erro_nomePublico'] = 'O nome público deve ter menos de 15 caracteres.';
             }
     
@@ -97,7 +97,7 @@ class Usuarios extends Controller
             $dados = [
                 'nome' => '',
                 'email' => '',
-                'nomePublico' => '',
+                'nome_publico' => '',
                 'senha' => '',
                 'senhaConfirmar' => '',
                 'erro_nome' => '',
@@ -153,7 +153,7 @@ class Usuarios extends Controller
                     URL::redireicionar('posts');
                 } else {
                     // Mensagem de erro genérica por segurança
-                    $dados['erro_senha'] = 'Email ou senha inválidos.';
+                    $dados['erro_senha'] = 'Email ou senha inválidos';
                 }
             }
 

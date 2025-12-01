@@ -160,7 +160,7 @@ class Posts extends Controller
                     return;
                     
                 case !$this->checarAutorizacao($id, "editar") :
-                    Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post2', 'danger');
+                    Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post', 'danger');
                     URL::redireicionar('posts');
                     return;
 
@@ -181,7 +181,7 @@ class Posts extends Controller
 
             if (!$this->checarAutorizacao($id, "editar")) {
 
-                Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post3', 'danger');
+                Sessao::mensagemAlerta('postError', 'Voce nao pode editar esse post', 'danger');
                 URL::redireicionar('posts');
             }
         }

@@ -22,7 +22,7 @@ Sessao::mensagemAlerta('usuarioError','Erro ao cadastrar usuario', 'danger');
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nome publico:</label>
-    <input type="text" placeholder="Nome publico a todos" class="form-control <?= $dados['erro_nomePublico'] ? 'is-invalid' : '' ?>" id="exampleInputEmail1" name="nomePublico" value="<?= $dados['nomePublico'] ?>">
+    <input type="text" placeholder="Nome publico a todos" class="form-control <?= $dados['erro_nomePublico'] ? 'is-invalid' : '' ?>" id="exampleInputEmail1" name="nome_publico" value="<?= $dados['nome_publico'] ?>">
     <div class="invalid-feedback"><?= $dados['erro_nomePublico'] ?></div>
     <div id="emailHelp" class="form-text">Coloque um nome de usuário não existente.</div>
 

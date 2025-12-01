@@ -13,10 +13,10 @@ class Usuario
     public function armazenar($dados)
     {
         try {
-            $this->db->query("INSERT INTO usuarios (nome, email, nome_publico, senha, status_perfil, tipo_perfil) VALUES (:nome, :email, :nomePublico, :senha , :status_perfil, :tipo_perfil)");
+            $this->db->query("INSERT INTO usuarios (nome, email, nome_publico, senha, status_perfil, tipo_perfil) VALUES (:nome, :email, :nome_publico, :senha , :status_perfil, :tipo_perfil)");
             $this->db->bind(':nome', $dados['nome']);
             $this->db->bind(':email', $dados['email']);
-            $this->db->bind(':nomePublico', $dados['nomePublico']);
+            $this->db->bind(':nome_publico', $dados['nome_publico']);
             $this->db->bind(':senha', $dados['senha']);
             $this->db->bind(':tipo_perfil', "comum");
             $this->db->bind(':status_perfil', "ativo");
@@ -39,10 +39,10 @@ class Usuario
     }
 
     // Método para verificar duplicidade de nome público
-    public function verificarDuplicidadeNomePublico($nomePublico)
+    public function verificarDuplicidadeNomePublico($nome_publico)
     {
-        $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE nome_publico = :nomePublico");
-        $this->db->bind(':nomePublico', $nomePublico);
+        $this->db->query("SELECT COUNT(*) as total FROM usuarios WHERE nome_publico = :nome_publico");
+        $this->db->bind(':nome_publico', $nome_publico);
         
         $resultado = $this->db->resultado();
         return $resultado->total > 0; // Retorna true se o nome público já existe

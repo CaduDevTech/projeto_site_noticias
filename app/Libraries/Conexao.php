@@ -5,7 +5,7 @@ class Conexao{
     private $host = "localhost";
     private $user = "root";
     private $password = "";
-    private $database = "banco_site_noticias";
+    private $database = "test";
     private $porta = "3306";
     private $dbh;
     private $stmt;
